@@ -4,7 +4,8 @@
   "description": "Application to extract and parse quake log entries",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index"
+    "start:match": "node src/index match",
+    "start:weapon": "node src/index weapon"
   },
   "repository": {
     "type": "git",
