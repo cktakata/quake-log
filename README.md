@@ -16,7 +16,7 @@ Quake Log Parser is a simple project to parse Quake Log game entries. It just an
 
 ## Installation
 
-Since no packages are being used (except the 'fs' and 'readLine' package built-in in nodejs), any version is doable to run the code.
+Since no packages are being used (except the 'fs', 'path' and 'readLine' package built-in in nodejs), any version is doable to run the code.
 
 Install the dependencies.
 
