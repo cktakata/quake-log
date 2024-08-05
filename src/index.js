@@ -9,13 +9,14 @@ async function processFile() {
   const fileStream = fs.createReadStream(logFile);
   const rl = readline.createInterface({
     input: fileStream,
-    crlfDelay: Infinity, // Detects all line endings
+    crlfDelay: Infinity,
   });
 
   let total_games = -1;
   for await (const line of rl) {
     let match = {};
     var game;
+    
     if (line.includes('InitGame')) {
       total_games++;
       game = `game ${total_games}`;
@@ -26,6 +27,7 @@ async function processFile() {
       };
       matches.push(match);
     }
+
     if (line.includes('ClientUserinfoChanged')) {
       // Parse possible player
       const regexP1 = /n\\(.*?)\\t/;
@@ -41,6 +43,7 @@ async function processFile() {
         ...new Set(matches[total_games][game].players),
       ];
     }
+
     if (line.includes('killed')) {
       // Parse the line to identify each usable value
       const regexP1 = /\d{1,3}:\d{1,2} Kill: [^:]+: (.*?) killed/;
