@@ -64,7 +64,8 @@ async function processFile() {
         matches[total_games][game].kills[player2] = 0;
 
       // Add player 1 score
-      if (player1 !== '<world>' && player1 !== player2) { // This last condition is to avoid suicidal
+      if (player1 !== '<world>' && player1 !== player2) {
+        // This last condition is to avoid suicidal
         matches[total_games][game].kills[player1]++;
       }
 
@@ -74,7 +75,8 @@ async function processFile() {
       }
 
       // Removes player score
-      if (player1 === player2) { // Remove score if suicidal
+      if (player1 === player2) {
+        // Remove score if suicidal
         matches[total_games][game].kills[player2]--;
       }
 
@@ -83,8 +85,16 @@ async function processFile() {
         ...new Set(matches[total_games][game].players),
       ];
 
-      // Sort entries
-      matches[total_games][game].players.sort( (p1,p2) => p1 - p2 );
+      // Sort players
+      matches[total_games][game].players =
+        matches[total_games][game].players.sort();
+
+      // Sort by ranking
+      matches[total_games][game].kills = Object.entries(
+        matches[total_games][game].kills
+      )
+        .sort((a, b) => [b[1]] - a[1])
+        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
     }
   }
 
