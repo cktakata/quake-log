@@ -3,7 +3,6 @@ const readline = require('readline');
 
 const matches = [];
 
-// Replace 'your-file.txt' with the actual path to your large file
 const logFile = './log/qgames.log';
 
 async function processFile() {
@@ -25,14 +24,31 @@ async function processFile() {
       };
       matches.push(match);
     }
+    if (line.includes('ClientUserinfoChanged')) {
+      // Parse possible player
+      const regexP1 = /n\\(.*?)\\t/;
+      const player1 = line.match(regexP1)[1];
+      if (player1 !== '<world>') {
+        matches[total_games][`game ${total_games}`].players.push(player1);
+        if (!matches[total_games][`game ${total_games}`].kills[player1])
+          matches[total_games][`game ${total_games}`].kills[player1] = 0;
+      }
+      
+      // Remove duplicated entries
+      matches[total_games][`game ${total_games}`].players = [
+        ...new Set(matches[total_games][`game ${total_games}`].players),
+      ];
+    }
     if (line.includes('killed')) {
       // Parse the line to identify each usable value
       const regexP1 = /\d{1,3}:\d{1,2} Kill: [^:]+: (.*?) killed/;
       const player1 = line.match(regexP1)[1];
       const regexP2 = /killed (.*?) by/;
       const player2 = line.match(regexP2)[1];
+
       // Add number of general kills in the game
       matches[total_games][`game ${total_games}`].total_kills++;
+
       // Add player 1 in the game
       if (player1 !== '<world>') {
         matches[total_games][`game ${total_games}`].players.push(player1);
@@ -44,7 +60,7 @@ async function processFile() {
       if (!matches[total_games][`game ${total_games}`].kills[player2])
         matches[total_games][`game ${total_games}`].kills[player2] = 0;
 
-      // Adds player 1 score
+      // Add player 1 score
       if (player1 !== '<world>' && player1 !== player2) {
         matches[total_games][`game ${total_games}`].kills[player1]++;
       }
@@ -59,6 +75,8 @@ async function processFile() {
         ...new Set(matches[total_games][`game ${total_games}`].players),
       ];
 
+      // Sort entries
+      matches[total_games][`game ${total_games}`].players.sort( (p1,p2) => p1 - p2 );
     }
   }
 
@@ -67,5 +85,5 @@ async function processFile() {
 }
 
 processFile().catch((err) => {
-  console.error('Error reading file:', err);
+  console.error('Error while processing file:', err);
 });
