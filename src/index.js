@@ -15,9 +15,11 @@ async function processFile() {
   let total_games = -1;
   for await (const line of rl) {
     let match = {};
+    var game;
     if (line.includes('InitGame')) {
       total_games++;
-      match[`game ${total_games}`] = {
+      game = `game ${total_games}`;
+      match[game] = {
         total_kills: 0,
         players: [],
         kills: {},
@@ -29,14 +31,14 @@ async function processFile() {
       const regexP1 = /n\\(.*?)\\t/;
       const player1 = line.match(regexP1)[1];
       if (player1 !== '<world>') {
-        matches[total_games][`game ${total_games}`].players.push(player1);
-        if (!matches[total_games][`game ${total_games}`].kills[player1])
-          matches[total_games][`game ${total_games}`].kills[player1] = 0;
+        matches[total_games][game].players.push(player1);
+        if (!matches[total_games][game].kills[player1])
+          matches[total_games][game].kills[player1] = 0;
       }
 
       // Remove duplicated entries
-      matches[total_games][`game ${total_games}`].players = [
-        ...new Set(matches[total_games][`game ${total_games}`].players),
+      matches[total_games][game].players = [
+        ...new Set(matches[total_games][game].players),
       ];
     }
     if (line.includes('killed')) {
@@ -47,42 +49,42 @@ async function processFile() {
       const player2 = line.match(regexP2)[1];
 
       // Add number of general kills in the game
-      matches[total_games][`game ${total_games}`].total_kills++;
+      matches[total_games][game].total_kills++;
 
       // Add player 1 in the game
       if (player1 !== '<world>') {
-        matches[total_games][`game ${total_games}`].players.push(player1);
-        if (!matches[total_games][`game ${total_games}`].kills[player1])
-          matches[total_games][`game ${total_games}`].kills[player1] = 0;
+        matches[total_games][game].players.push(player1);
+        if (!matches[total_games][game].kills[player1])
+          matches[total_games][game].kills[player1] = 0;
       }
 
       // Add player 2 in the game
-      matches[total_games][`game ${total_games}`].players.push(player2);
-      if (!matches[total_games][`game ${total_games}`].kills[player2])
-        matches[total_games][`game ${total_games}`].kills[player2] = 0;
+      matches[total_games][game].players.push(player2);
+      if (!matches[total_games][game].kills[player2])
+        matches[total_games][game].kills[player2] = 0;
 
       // Add player 1 score
       if (player1 !== '<world>' && player1 !== player2) { // This last condition is to avoid suicidal
-        matches[total_games][`game ${total_games}`].kills[player1]++;
+        matches[total_games][game].kills[player1]++;
       }
 
       // Removes player score
       if (player1 === '<world>') {
-        matches[total_games][`game ${total_games}`].kills[player2]--;
+        matches[total_games][game].kills[player2]--;
       }
 
       // Removes player score
       if (player1 === player2) { // Remove score if suicidal
-        matches[total_games][`game ${total_games}`].kills[player2]--;
+        matches[total_games][game].kills[player2]--;
       }
 
       // Remove duplicated entries
-      matches[total_games][`game ${total_games}`].players = [
-        ...new Set(matches[total_games][`game ${total_games}`].players),
+      matches[total_games][game].players = [
+        ...new Set(matches[total_games][game].players),
       ];
 
       // Sort entries
-      matches[total_games][`game ${total_games}`].players.sort( (p1,p2) => p1 - p2 );
+      matches[total_games][game].players.sort( (p1,p2) => p1 - p2 );
     }
   }
 
@@ -92,4 +94,5 @@ async function processFile() {
 
 processFile().catch((err) => {
   console.error('Error while processing file:', err);
+  console.log(JSON.stringify(matches, '    ', 2));
 });
