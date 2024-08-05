@@ -53,8 +53,6 @@ async function processMatch() {
         const player1 = line.match(regexP1)[1];
         const regexP2 = /killed (.*?) by/;
         const player2 = line.match(regexP2)[1];
-        const regexWeapon = /by\s+(.*?)$/;
-        const weapon = line.match(regexWeapon)[1];
 
         // Add number of general kills in the game
         matches[total_games][game].total_kills++;

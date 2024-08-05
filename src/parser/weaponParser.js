@@ -39,7 +39,7 @@ async function processWeapon() {
         } else {
           matches[total_games][game].kills_by_means[weapon] = matches[
             total_games
-          ][game].kills_by_means[weapon]+=1;
+          ][game].kills_by_means[weapon] += 1;
         }
 
         // Sort by ranking
