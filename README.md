@@ -64,7 +64,8 @@ npm run start:weapon
         "Isgalamido": -9
       }
     }
-  }
+  },
+  ...
 ]
 ```
 
@@ -85,7 +86,8 @@ npm run start:weapon
         "MOD_FALLING": 1
       }
     }
-  }
+  },
+  ...
 ]
 ```
 
