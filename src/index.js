@@ -103,6 +103,6 @@ async function processFile() {
 }
 
 processFile().catch((err) => {
-  console.error('Error while processing file:', err);
   console.log(JSON.stringify(matches, '    ', 2));
+  console.error('Error while processing file:', err);
 });
