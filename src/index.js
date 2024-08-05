@@ -33,7 +33,7 @@ async function processFile() {
         if (!matches[total_games][`game ${total_games}`].kills[player1])
           matches[total_games][`game ${total_games}`].kills[player1] = 0;
       }
-      
+
       // Remove duplicated entries
       matches[total_games][`game ${total_games}`].players = [
         ...new Set(matches[total_games][`game ${total_games}`].players),
@@ -55,18 +55,24 @@ async function processFile() {
         if (!matches[total_games][`game ${total_games}`].kills[player1])
           matches[total_games][`game ${total_games}`].kills[player1] = 0;
       }
+
       // Add player 2 in the game
       matches[total_games][`game ${total_games}`].players.push(player2);
       if (!matches[total_games][`game ${total_games}`].kills[player2])
         matches[total_games][`game ${total_games}`].kills[player2] = 0;
 
       // Add player 1 score
-      if (player1 !== '<world>' && player1 !== player2) {
+      if (player1 !== '<world>' && player1 !== player2) { // This last condition is to avoid suicidal
         matches[total_games][`game ${total_games}`].kills[player1]++;
       }
 
       // Removes player score
       if (player1 === '<world>') {
+        matches[total_games][`game ${total_games}`].kills[player2]--;
+      }
+
+      // Removes player score
+      if (player1 === player2) { // Remove score if suicidal
         matches[total_games][`game ${total_games}`].kills[player2]--;
       }
 
