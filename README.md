@@ -35,6 +35,60 @@ or
 npm run start:weapon
 ```
 
+## Expected results from Match Report
+
+```javascript
+[
+  {
+    "game 0": {
+      "total_kills": 0,
+      "players": [
+        "Isgalamido"
+      ],
+      "kills": {
+        "Isgalamido": 0
+      }
+    }
+  },
+  {
+    "game 1": {
+      "total_kills": 11,
+      "players": [
+        "Dono da Bola",
+        "Isgalamido",
+        "Mocinha"
+      ],
+      "kills": {
+        "Dono da Bola": 0,
+        "Mocinha": 0,
+        "Isgalamido": -9
+      }
+    }
+  }
+]
+```
+
+## Expected results from Weapon Report
+
+```javascript
+[
+  {
+    "game-0": {
+      "kills_by_means": {}
+    }
+  },
+  {
+    "game-1": {
+      "kills_by_means": {
+        "MOD_TRIGGER_HURT": 7,
+        "MOD_ROCKET_SPLASH": 3,
+        "MOD_FALLING": 1
+      }
+    }
+  }
+]
+```
+
 ## License
 
 MIT
